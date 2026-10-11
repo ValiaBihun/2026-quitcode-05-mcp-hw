@@ -9,9 +9,11 @@
     "node": ">=22.19.0"
   },
   "scripts": {
-    "start": "node src/server.mjs"
+    "start": "node src/server.mjs",
+    "start:http": "node src/http.mjs"
   },
   "dependencies": {
+    "@modelcontextprotocol/node": "2.1.0",
     "@modelcontextprotocol/server": "2.1.0",
     "zod": "4.6.5"
   }

@@ -122,5 +122,43 @@
 
 ## Task E (бонус)
 
-- Варіант: E1 HTTP-сервер
-- <команди, виводи, спостереження — див. walkthrough, Task E>
+- **Варіант:** E1 — HTTP-версія сервера LeadDesk із захистом Host і Origin.
+- **Що зроблено:** `mcp/leaddesk-server/src/http.mjs` перевикористовує ту саму `factory` з `src/leaddesk.mjs`, що й stdio
+  (`server.mjs` не змінювався). До `mcp/leaddesk-server/package.json` додано `"@modelcontextprotocol/node": "2.1.0"` точною
+  версією (дозволений виняток для E1) і скрипт `start:http`. У `package-lock.json` нові лише `@modelcontextprotocol/node`,
+  `@modelcontextprotocol/core`, `hono` і `@hono/node-server`; `@modelcontextprotocol/sdk` не з'явився. Кореневі
+  `package.json` і `package-lock.json` не змінені.
+- **Як влаштовано:** `createMcpHandler(factory)` з `@modelcontextprotocol/server` загорнуто в `toNodeHandler` з
+  `@modelcontextprotocol/node` (`src/http.mjs:18`). Гварди `localhostHostValidation()` і `localhostOriginValidation()` створено
+  в рядках 21–22 і **викликано в обробнику запиту** перед `await mcp(req, res)` (рядки 25–27): кожен гвард сам відповідає `403`
+  і повертає `false`. Сервер слухає лише `127.0.0.1` (рядок 15, `listen` у рядку 35); `netstat` показав
+  `127.0.0.1:3333 LISTENING`. Журнал іде в stderr (`console.error`).
+- **Пастка з walkthrough, перевірена за типами:** `ToNodeHandlerOptions` у `@modelcontextprotocol/node` має лише `onerror` і
+  `maxRequestBodySize`, тож гварди опцією передати не можна. Експеримент із передачею опції ми **не проводили**: висновок
+  зроблено за декларацією типів.
+- **Докази — чотири відповіді `curl`** (Git Bash; сервер запущено командою `node src/http.mjs`, тіло запиту `body.json` лежало
+  в тимчасовій теці поза репозиторієм і не комітиться):
+
+  ```bash
+  printf '%s' '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{"_meta":{"io.modelcontextprotocol/protocolVersion":"2026-07-28","io.modelcontextprotocol/clientCapabilities":{}}}}' > body.json
+  H=(-H "Content-Type: application/json" -H "Accept: application/json, text/event-stream" -H "MCP-Protocol-Version: 2026-07-28" -H "Mcp-Method: tools/list")
+
+  curl -s -w '\nHTTP %{http_code}\n' "${H[@]}" --data-binary @body.json http://127.0.0.1:3333/mcp
+  curl -s -w '\nHTTP %{http_code}\n' "${H[@]}" -H "Host: evil.example" --data-binary @body.json http://127.0.0.1:3333/mcp
+  curl -s -w '\nHTTP %{http_code}\n' "${H[@]}" -H "Origin: https://evil.example" --data-binary @body.json http://127.0.0.1:3333/mcp
+  curl -s -w '\nHTTP %{http_code}\n' -H "Content-Type: application/json" -H "Accept: application/json, text/event-stream" -H "Mcp-Method: tools/list" --data-binary @body.json http://127.0.0.1:3333/mcp
+  ```
+
+  | # | Запит | Відповідь |
+  |---|---|---|
+  | 1 | звичайний | `HTTP 200`, `{"result":{"tools":[…` — два інструменти: `leaddesk_find_leads` (`readOnlyHint: true`) і `leaddesk_set_lead_status` (`readOnlyHint: false`) |
+  | 2 | `Host: evil.example` | `HTTP 403`, `{"jsonrpc":"2.0","error":{"code":-32000,"message":"Invalid Host: evil.example"},"id":null}` |
+  | 3 | `Origin: https://evil.example` | `HTTP 403`, `{"jsonrpc":"2.0","error":{"code":-32000,"message":"Invalid Origin: evil.example"},"id":null}` |
+  | 4 | без `MCP-Protocol-Version` | `HTTP 400`, `{"jsonrpc":"2.0","error":{"code":-32020,"message":"Bad Request: the request headers and body disagree: the body envelope names protocol version 2026-07-28 but the required MCP-Protocol-Version header is absent", …},"id":1}` |
+
+- **Що це доводить, а що ні:** відповіді 2 і 3 дає гвард до MCP-обробника (у тілі стандартна помилка `-32000`, а не відповідь
+  протоколу), відповідь 4 дає вже сам MCP-обробник (код `-32020`). Гварди захищають від DNS rebinding і від викликів з чужих
+  веб-сторінок у браузері; від іншого локального процесу вони не захищають: автентифікації в сервері немає.
+- **Регресія stdio:** після змін Inspector видає `tools-list.json`, `bad-input.json` і `resource-read.json`, байт у байт
+  ідентичні закомітеним; `set-status.json` відрізняється лише часовими мітками.
+- **Прибирання:** тестовий сервер зупинено, порт 3333 вільний (перевірено `netstat`, процесів `http.mjs` немає).

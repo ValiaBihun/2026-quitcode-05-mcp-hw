@@ -32,6 +32,21 @@ node src/server.mjs    # stdio: сервер чекає на клієнта MCP,
 |---|---|
 | `src/leaddesk.mjs` | дані, два інструменти й ресурс; експортує `factory` |
 | `src/server.mjs` | точка входу stdio: `serveStdio(factory)` |
+| `src/http.mjs` | бонус E1: та сама `factory` по HTTP на `127.0.0.1:3333`, гварди Host і Origin |
+
+## HTTP-режим (бонус E1)
+
+```bash
+npm run start:http    # http://127.0.0.1:3333/mcp
+```
+
+Сервер слухає **лише `127.0.0.1`** (порт можна змінити змінною `LEADDESK_HTTP_PORT`) і не має автентифікації: його не
+можна виставляти назовні. Гварди `localhostHostValidation()` і `localhostOriginValidation()` з
+`@modelcontextprotocol/node` викликаються в обробнику запиту **вручну**, перед MCP-обробником: підроблений `Host` або
+`Origin` отримує `403`. Передати їх опцією в `toNodeHandler` не можна: опцій для цього там немає. Для цього режиму в
+`package.json` додано `@modelcontextprotocol/node` точною версією `2.1.0`. Чотири відповіді `curl`, які це доводять
+(200, 403, 403, 400), — у `docs/mcp/verification.md`, розділ «Task E». До Claude Code цей режим не підключають: у Task C
+використано stdio.
 
 ## Перевірка Inspector'ом
 
