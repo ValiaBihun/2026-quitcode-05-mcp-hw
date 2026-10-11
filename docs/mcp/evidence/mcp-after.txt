@@ -1,0 +1,21 @@
+browser_click: клік по елементу
+browser_close: закрити браузер/сторінку
+browser_console_messages: повідомлення консолі
+browser_drag: перетягування
+browser_emulate_media: емуляція медіа-параметрів (напр. темна тема)
+browser_fill_form: заповнення полів форми
+browser_find: пошук на сторінці
+browser_handle_dialog: обробка діалогів (alert/confirm)
+browser_hover: наведення курсора
+browser_navigate: перехід за URL
+browser_navigate_back: назад в історії
+browser_network_request: деталі одного мережевого запиту
+browser_network_requests: список мережевих запитів
+browser_press_key: натискання клавіші
+browser_resize: зміна розміру вікна
+browser_select_option: вибір опції в <select>
+browser_snapshot: знімок доступності сторінки
+browser_tabs: керування вкладками
+browser_take_screenshot: скриншот
+browser_type: введення тексту
+browser_wait_for: очікування тексту/умови

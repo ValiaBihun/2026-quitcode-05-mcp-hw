@@ -1,0 +1,80 @@
+# Vercel build log of the latest production deployment (branch main, commit 958d2ee) of the personal Vercel project.
+# Full output of `vercel inspect <deployment> --logs` (Vercel CLI 63.1.2 (Node.js 24.21.0)), 2026-10-11.
+# Left out on purpose: the scope slug, the deployment URL and the author name.
+2026-10-11T11:45:32.125Z  Running build in Washington, D.C., USA (East) – iad1
+2026-10-11T11:45:32.145Z  Build machine configuration: 2 cores, 8 GB
+2026-10-11T11:45:32.428Z  Cloning github.com/ValiaBihun/2026-quitcode-05-mcp-hw (Branch: main, Commit: 958d2ee)
+2026-10-11T11:45:32.431Z  Previous build caches not available.
+2026-10-11T11:45:33.079Z  Cloning completed: 650.000ms
+2026-10-11T11:45:34.228Z  Running "vercel build"
+2026-10-11T11:45:34.276Z  Vercel CLI 62.7.0
+2026-10-11T11:45:35.113Z  Installing dependencies...
+2026-10-11T11:45:41.287Z  npm warn deprecated rimraf@2.7.1: Rimraf versions prior to v4 are no longer supported
+2026-10-11T11:45:41.718Z  npm warn deprecated lodash.isequal@4.5.0: This package is deprecated. Use require('node:util').isDeepStrictEqual instead.
+2026-10-11T11:45:42.217Z  npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+2026-10-11T11:45:42.406Z  npm warn deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+2026-10-11T11:45:44.013Z  npm warn deprecated fstream@1.0.12: This package is no longer supported.
+2026-10-11T11:45:47.878Z  npm warn deprecated eslint@9.39.5: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+2026-10-11T11:45:58.944Z  
+2026-10-11T11:45:58.945Z  added 493 packages in 23s
+2026-10-11T11:45:58.945Z  
+2026-10-11T11:45:58.946Z  154 packages are looking for funding
+2026-10-11T11:45:58.946Z  run `npm fund` for details
+2026-10-11T11:45:58.947Z  npm warn install-scripts 1 package has install scripts not yet covered by allowScripts:
+2026-10-11T11:45:58.947Z  npm warn install-scripts   unrs-resolver@1.12.2 (postinstall: node postinstall.js)
+2026-10-11T11:45:58.947Z  npm warn install-scripts
+2026-10-11T11:45:58.947Z  npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
+2026-10-11T11:45:59.033Z  Detected Next.js version: 16.3.5
+2026-10-11T11:45:59.049Z  Running "npm run build"
+2026-10-11T11:45:59.614Z  
+2026-10-11T11:45:59.614Z  > 2026-quitcode-05-mcp-hw@0.1.0 build
+2026-10-11T11:45:59.614Z  > next build
+2026-10-11T11:45:59.614Z  
+2026-10-11T11:46:00.356Z  ▲ Next.js 16.3.5 (Turbopack)
+2026-10-11T11:46:00.592Z  Applying modifyConfig from Vercel
+2026-10-11T11:46:00.603Z  ✓ Running next.config.ts took 238ms
+2026-10-11T11:46:00.656Z  Attention: Next.js now collects completely anonymous telemetry regarding usage.
+2026-10-11T11:46:00.659Z  This information is used to shape Next.js' roadmap and prioritize features.
+2026-10-11T11:46:00.659Z  You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+2026-10-11T11:46:00.660Z  https://nextjs.org/telemetry
+2026-10-11T11:46:00.660Z  
+2026-10-11T11:46:00.694Z  
+2026-10-11T11:46:00.770Z  Creating an optimized production build ...
+2026-10-11T11:46:18.363Z  ✓ Compiled successfully in 16.6s
+2026-10-11T11:46:18.381Z  Running TypeScript ...
+2026-10-11T11:46:23.950Z  Finished TypeScript in 5.6s ...
+2026-10-11T11:46:23.958Z  Collecting page data using 1 worker ...
+2026-10-11T11:46:25.112Z  Generating static pages using 1 worker (0/8) ...
+2026-10-11T11:46:25.376Z  Generating static pages using 1 worker (2/8)
+2026-10-11T11:46:25.381Z  db:listUsers: 1
+2026-10-11T11:46:25.538Z  Generating static pages using 1 worker (4/8)
+2026-10-11T11:46:25.546Z  Generating static pages using 1 worker (6/8)
+2026-10-11T11:46:25.554Z  ✓ Generating static pages using 1 worker (8/8) in 443ms
+2026-10-11T11:46:25.671Z  Finalizing page optimization ...
+2026-10-11T11:46:25.740Z  Running onBuildComplete from Vercel
+2026-10-11T11:46:26.122Z  
+2026-10-11T11:46:26.124Z  Route (app)
+2026-10-11T11:46:26.125Z  ┌ ○ /
+2026-10-11T11:46:26.125Z  ├ ○ /_not-found
+2026-10-11T11:46:26.125Z  ├ ƒ /api/leads
+2026-10-11T11:46:26.125Z  ├ ƒ /api/n8n/[event]
+2026-10-11T11:46:26.125Z  ├ ƒ /dashboard
+2026-10-11T11:46:26.125Z  ├ ƒ /dashboard/leads/[id]
+2026-10-11T11:46:26.125Z  ├ ○ /login
+2026-10-11T11:46:26.125Z  ├ ƒ /quotes/[id]
+2026-10-11T11:46:26.125Z  └ ○ /quotes/new
+2026-10-11T11:46:26.125Z  
+2026-10-11T11:46:26.125Z  
+2026-10-11T11:46:26.125Z  ƒ Proxy (Middleware)
+2026-10-11T11:46:26.125Z  
+2026-10-11T11:46:26.125Z  ○  (Static)   prerendered as static content
+2026-10-11T11:46:26.125Z  ƒ  (Dynamic)  server-rendered on demand
+2026-10-11T11:46:26.126Z  
+2026-10-11T11:46:26.467Z  Build Completed in /vercel/output [51s]
+2026-10-11T11:46:26.518Z  Deploying outputs...
+2026-10-11T11:46:37.016Z  Deployment completed
+2026-10-11T11:46:37.026Z  Creating build cache...
+2026-10-11T11:46:51.840Z  Created build cache: 15s
+2026-10-11T11:46:51.840Z  Uploading build cache [165.61 MB]
+2026-10-11T11:46:54.231Z  Build cache uploaded: 2.391s
+status	● Ready

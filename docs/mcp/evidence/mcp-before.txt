@@ -1,0 +1,25 @@
+browser_navigate: перейти за URL
+browser_navigate_back: назад в історії
+browser_tabs: список, створення, закриття, вибір вкладки
+browser_close: закрити сторінку
+browser_resize: змінити розмір вікна
+browser_snapshot: знімок дерева доступності (кращий за скріншот)
+browser_find: пошук тексту чи regex у знімку
+browser_take_screenshot: скріншот сторінки чи елемента
+browser_console_messages: повідомлення консолі
+browser_network_requests: список мережевих запитів
+browser_network_request: деталі одного запиту (заголовки, тіло)
+browser_click: клік
+browser_hover: наведення
+browser_type: введення тексту
+browser_fill_form: заповнення кількох полів
+browser_select_option: вибір у випадному списку
+browser_press_key: натискання клавіші
+browser_drag: перетягування між елементами
+browser_drop: скидання файлів чи даних на елемент
+browser_file_upload: завантаження файлів
+browser_handle_dialog: прийняти чи відхилити діалог
+browser_wait_for: чекати на появу чи зникнення тексту, або просто час
+browser_emulate_media: світла чи темна тема, reduced motion, друк тощо
+browser_evaluate: виконати JavaScript на сторінці чи елементі
+browser_run_code_unsafe: довільний Playwright-код у процесі сервера (в описі інструмента сказано, що це RCE-еквівалент)
