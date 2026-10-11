@@ -1,9 +1,9 @@
 # Vercel build log of the latest production deployment (branch main, commit 958d2ee) of the personal Vercel project.
 # Full output of `vercel inspect <deployment> --logs` (Vercel CLI 63.1.2 (Node.js 24.21.0)), 2026-10-11.
-# Left out on purpose: the scope slug, the deployment URL and the author name.
+# Left out on purpose: the scope slug, the deployment URL and the author name; the GitHub owner login in the clone line is replaced with [owner].
 2026-10-11T11:45:32.125Z  Running build in Washington, D.C., USA (East) – iad1
 2026-10-11T11:45:32.145Z  Build machine configuration: 2 cores, 8 GB
-2026-10-11T11:45:32.428Z  Cloning github.com/ValiaBihun/2026-quitcode-05-mcp-hw (Branch: main, Commit: 958d2ee)
+2026-10-11T11:45:32.428Z  Cloning github.com/[owner]/2026-quitcode-05-mcp-hw (Branch: main, Commit: 958d2ee)
 2026-10-11T11:45:32.431Z  Previous build caches not available.
 2026-10-11T11:45:33.079Z  Cloning completed: 650.000ms
 2026-10-11T11:45:34.228Z  Running "vercel build"

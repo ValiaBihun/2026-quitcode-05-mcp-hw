@@ -39,7 +39,8 @@ server.listen(PORT, HOST, () => {
 for (const signal of ["SIGINT", "SIGTERM"]) {
   process.on(signal, () => {
     console.error(`[leaddesk-http] stopping (${signal})`);
-    server.close();
-    process.exit(0);
+    server.close(() => process.exit(0)); // stop accepting, let in-flight responses finish, then exit
+    server.closeIdleConnections(); // keep-alive sockets with no request in flight would block close()
+    setTimeout(() => process.exit(1), 5000).unref(); // never hang on a stuck connection
   });
 }
