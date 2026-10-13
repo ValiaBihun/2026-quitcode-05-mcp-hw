@@ -1,0 +1,52 @@
+# Raw output of the four curl checks of the HTTP LeadDesk server (Task E1). Nothing is shortened.
+# Server: `node src/http.mjs` in mcp/leaddesk-server/, listening on 127.0.0.1:3333 only. Date: 2026-10-13, local run (Git Bash).
+# Only the trailing carriage return (\r) of each header line was removed; status lines, headers and bodies are exactly what curl -i printed.
+# The `Date:` header values are the server's clock (UTC).
+#
+# Common part, then four requests (body.json is created outside the repository and is not committed):
+#   printf '%s' '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{"_meta":{"io.modelcontextprotocol/protocolVersion":"2026-07-28","io.modelcontextprotocol/clientCapabilities":{}}}}' > body.json
+#   H=(-H "Content-Type: application/json" -H "Accept: application/json, text/event-stream" -H "MCP-Protocol-Version: 2026-07-28" -H "Mcp-Method: tools/list")
+#   1. curl -s -i "${H[@]}" --data-binary @body.json http://127.0.0.1:3333/mcp
+#   2. curl -s -i "${H[@]}" -H "Host: evil.example" --data-binary @body.json http://127.0.0.1:3333/mcp
+#   3. curl -s -i "${H[@]}" -H "Origin: https://evil.example" --data-binary @body.json http://127.0.0.1:3333/mcp
+#   4. curl -s -i -H "Content-Type: application/json" -H "Accept: application/json, text/event-stream" -H "Mcp-Method: tools/list" --data-binary @body.json http://127.0.0.1:3333/mcp
+
+===== 1. звичайний запит =====
+HTTP/1.1 200 OK
+content-type: application/json
+Date: Tue, 13 Oct 2026 14:54:13 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+Transfer-Encoding: chunked
+
+{"result":{"tools":[{"name":"leaddesk_find_leads","title":"Знайти ліди LeadDesk","description":"Повертає ліди LeadDesk із заданим статусом, найновіші першими: ідентифікатор, компанія, статус, джерело, бюджет і дата заявки, а також скільки всього лідів має цей статус. Імені, email і тексту заявки не повертає. Тільки читає, нічого не змінює. Що означає кожен статус — у ресурсі leaddesk://reference/statuses.","inputSchema":{"type":"object","$schema":"https://json-schema.org/draft/2020-12/schema","properties":{"status":{"type":"string","enum":["new","contacted","qualified","won","lost","any"],"description":"Статус, за яким шукати: new, contacted, qualified, won або lost; any — ліди з будь-яким статусом"},"limit":{"default":10,"description":"Скільки лідів повернути, від 1 до 50; за замовчуванням 10. Скільки всього знайдено, видно в total","type":"integer","minimum":1,"maximum":50}},"required":["status"]},"annotations":{"readOnlyHint":true,"openWorldHint":false}},{"name":"leaddesk_set_lead_status","title":"Змінити статус ліда LeadDesk","description":"ЗМІНЮЄ ДАНІ: переводить один лід LeadDesk у новий статус і пише запис в аудит (дія, лід, час, старий і новий статус, причина). Перед викликом покажи людині ідентифікатор ліда, компанію, поточний і новий статус та причину й дочекайся її підтвердження. Статус — лише один із п'яти зі словника LeadDesk (що кожен означає — у ресурсі leaddesk://reference/statuses). Ідентифікатор не вгадуй: знайди його через leaddesk_find_leads.","inputSchema":{"type":"object","$schema":"https://json-schema.org/draft/2020-12/schema","properties":{"leadId":{"type":"string","pattern":"^lead_\\d{4}$","description":"Ідентифікатор ліда: lead_ і чотири цифри, напр. lead_0002. Знайти його можна через leaddesk_find_leads"},"status":{"type":"string","enum":["new","contacted","qualified","won","lost"],"description":"Новий статус ліда: new, contacted, qualified, won або lost. Має відрізнятися від поточного"},"reason":{"type":"string","minLength":3,"maxLength":500,"description":"Чому змінюємо статус, 3–500 символів, напр. «зателефонували, клієнт чекає кошторис». Потрапляє в аудит"}},"required":["leadId","status","reason"]},"annotations":{"readOnlyHint":false,"destructiveHint":false,"idempotentHint":false,"openWorldHint":false}}],"resultType":"complete","ttlMs":0,"cacheScope":"private","_meta":{"io.modelcontextprotocol/serverInfo":{"name":"leaddesk","version":"0.1.0"}}},"jsonrpc":"2.0","id":1}
+
+===== 2. Host: evil.example =====
+HTTP/1.1 403 Forbidden
+Content-Type: application/json
+Date: Tue, 13 Oct 2026 14:54:14 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+Transfer-Encoding: chunked
+
+{"jsonrpc":"2.0","error":{"code":-32000,"message":"Invalid Host: evil.example"},"id":null}
+
+===== 3. Origin: https://evil.example =====
+HTTP/1.1 403 Forbidden
+Content-Type: application/json
+Date: Tue, 13 Oct 2026 14:54:14 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+Transfer-Encoding: chunked
+
+{"jsonrpc":"2.0","error":{"code":-32000,"message":"Invalid Origin: evil.example"},"id":null}
+
+===== 4. без MCP-Protocol-Version =====
+HTTP/1.1 400 Bad Request
+content-type: application/json
+Date: Tue, 13 Oct 2026 14:54:14 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+Transfer-Encoding: chunked
+
+{"jsonrpc":"2.0","error":{"code":-32020,"message":"Bad Request: the request headers and body disagree: the body envelope names protocol version 2026-07-28 but the required MCP-Protocol-Version header is absent","data":{"mismatch":{"header":"(missing)","body":"the body envelope names protocol version 2026-07-28 but the required MCP-Protocol-Version header is absent"}}},"id":1}
